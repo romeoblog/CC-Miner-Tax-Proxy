@@ -54,3 +54,7 @@ supervisorctl reload
 ## 关于SSL
 
 如果要用自己的证书，请直接替换key.key和cer.crt文件，如果看不懂这句话就不要管
+
+## 注意
+
+可能需要打开连接数限制，请参考 [这篇文章](https://zhuanlan.zhihu.com/p/222039408)
