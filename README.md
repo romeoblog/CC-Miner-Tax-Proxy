@@ -2,6 +2,7 @@
 最稳定的ETC/ETH/BTC中转抽水软件(之一)
 软件仅供学习参考，请勿用于其他目的，不承担任何责任
 我这个不是MinerProxy那个，老矿牛逼，我支持老矿
+注意，BTC功能尚未测试，可能存在问题
 
 ## 使用方法
 [Windows](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/master/windows/)

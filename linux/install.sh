@@ -20,8 +20,6 @@ cmd="apt-get"
 
 sys_bit=$(uname -m)
 
-caddy_arch="amd64"
-
 case $sys_bit in
 'amd64' | x86_64) ;;
 *)
@@ -692,16 +690,17 @@ install_download() {
     $cmd update -y
     if [[ $cmd == "apt-get" ]]; then
         $cmd install -y lrzsz git zip unzip curl wget supervisor
+        service supervisor restart
     else
+        $cmd install -y epel-release
+        $cmd update -y
         $cmd install -y lrzsz git zip unzip curl wget supervisor
+        systemctl enable supervisord
+        service supervisord restart
     fi
-    service supervisor restart
     [ -d /tmp/ccminer ] && rm -rf /tmp/ccminer
     mkdir -p /tmp/ccminer
-    pushd /tmp/ccminer
     git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy -b master /tmp/ccminer/gitcode --depth=1
-    popd
-    clear
 
     if [[ ! -d /tmp/ccminer/gitcode ]]; then
         echo
@@ -736,8 +735,13 @@ write_json() {
         echo "  \"ethWorker\": \"${ethWorker}\"," >>$jsonPath
         echo "  \"ethTaxPercent\": ${ethTaxPercent}," >>$jsonPath
         echo "  \"enableEthProxy\": true," >>$jsonPath
-        ufw allow $ethTcpPort
-        ufw allow $ethTlsPort
+        if [[ $cmd == "apt-get" ]]; then
+            ufw allow $ethTcpPort
+            ufw allow $ethTlsPort
+        else
+            firewall-cmd --zone=public --add-port=$ethTcpPort/tcp --permanent
+            firewall-cmd --zone=public --add-port=$ethTlsPort/tcp --permanent
+        fi
     else
         echo "  \"ethPoolAddress\": \"eth.f2pool.com\"," >>$jsonPath
         echo "  \"ethPoolPort\": 6688," >>$jsonPath
@@ -757,8 +761,13 @@ write_json() {
         echo "  \"etcWorker\": \"${etcWorker}\"," >>$jsonPath
         echo "  \"etcTaxPercent\": ${etcTaxPercent}," >>$jsonPath
         echo "  \"enableEtcProxy\": true," >>$jsonPath
-        ufw allow $etcTcpPort
-        ufw allow $etcTlsPort
+        if [[ $cmd == "apt-get" ]]; then
+            ufw allow $etcTcpPort
+            ufw allow $etcTlsPort
+        else
+            firewall-cmd --zone=public --add-port=$etcTcpPort/tcp --permanent
+            firewall-cmd --zone=public --add-port=$etcTlsPort/tcp --permanent
+        fi
     else
         echo "  \"etcPoolAddress\": \"etc.f2pool.com\"," >>$jsonPath
         echo "  \"etcPoolPort\": 8118," >>$jsonPath
@@ -778,8 +787,13 @@ write_json() {
         echo "  \"btcWorker\": \"${btcWorker}\"," >>$jsonPath
         echo "  \"btcTaxPercent\": ${btcTaxPercent}," >>$jsonPath
         echo "  \"enableBtcProxy\": true," >>$jsonPath
-        ufw allow $btcTlsPort
-        ufw allow $btcTlsPort
+        if [[ $cmd == "apt-get" ]]; then
+            ufw allow $btcTlsPort
+            ufw allow $btcTlsPort
+        else
+            firewall-cmd --zone=public --add-port=$btcTlsPort/tcp --permanent
+            firewall-cmd --zone=public --add-port=$btcTlsPort/tcp --permanent
+        fi
     else
         echo "  \"btcPoolAddress\": \"btc.f2pool.com\"," >>$jsonPath
         echo "  \"btcPoolPort\": 3333," >>$jsonPath
@@ -793,6 +807,11 @@ write_json() {
 
     echo "  \"version\": \"1.1.0\"" >>$jsonPath
     echo "}" >>$jsonPath
+    if [[ $cmd == "apt-get" ]]; then
+        ufw reload
+    else
+        systemctl restart firewalld
+    fi
 }
 
 start_write_config() {
@@ -807,13 +826,27 @@ start_write_config() {
         echo "directory=${installPath}/" >>/etc/supervisor/conf/ccminer${installNumberTag}.conf
         echo "autostart=true" >>/etc/supervisor/conf/ccminer${installNumberTag}.conf
         echo "autorestart=true" >>/etc/supervisor/conf/ccminer${installNumberTag}.conf
-    else
+    elif [ -d "/etc/supervisor/conf.d/" ]; then
         rm /etc/supervisor/conf.d/ccminer${installNumberTag}.conf -f
         echo "[program:ccminertaxproxy${installNumberTag}]" >>/etc/supervisor/conf.d/ccminer${installNumberTag}.conf
         echo "command=${installPath}/ccminertaxproxy" >>/etc/supervisor/conf.d/ccminer${installNumberTag}.conf
         echo "directory=${installPath}/" >>/etc/supervisor/conf.d/ccminer${installNumberTag}.conf
         echo "autostart=true" >>/etc/supervisor/conf.d/ccminer${installNumberTag}.conf
         echo "autorestart=true" >>/etc/supervisor/conf.d/ccminer${installNumberTag}.conf
+    elif [ -d "/etc/supervisord.d/" ]; then
+        rm /etc/supervisord.d/ccminer${installNumberTag}.ini -f
+        echo "[program:ccminertaxproxy${installNumberTag}]" >>/etc/supervisord.d/ccminer${installNumberTag}.ini
+        echo "command=${installPath}/ccminertaxproxy" >>/etc/supervisord.d/ccminer${installNumberTag}.ini
+        echo "directory=${installPath}/" >>/etc/supervisord.d/ccminer${installNumberTag}.ini
+        echo "autostart=true" >>/etc/supervisord.d/ccminer${installNumberTag}.ini
+        echo "autorestart=true" >>/etc/supervisord.d/ccminer${installNumberTag}.ini
+    else
+        echo
+        echo "----------------------------------------------------------------"
+        echo
+        echo " Supervisor安装目录没了，安装失败"
+        echo
+        exit 1
     fi
     write_json
     changeLimit="n"
@@ -826,6 +859,7 @@ start_write_config() {
         changeLimit="y"
     fi
 
+    clear
     echo
     echo "----------------------------------------------------------------"
     echo
@@ -929,8 +963,10 @@ uninstall() {
         rm -rf $installPath -f
         if [ -d "/etc/supervisor/conf/" ]; then
             rm /etc/supervisor/conf/ccminer${installNumberTag}.conf -f
-        else
+        elif [ -d "/etc/supervisor/conf.d/" ]; then
             rm /etc/supervisor/conf.d/ccminer${installNumberTag}.conf -f
+        elif [ -d "/etc/supervisord.d/" ]; then
+            rm /etc/supervisord.d/ccminer${installNumberTag}.ini -f
         fi
         echo "----------------------------------------------------------------"
         echo
