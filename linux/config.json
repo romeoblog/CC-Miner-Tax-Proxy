@@ -22,5 +22,8 @@
   "btcUser": "user",
   "btcWorker": "worker",
   "btcTaxPercent": 20, 
-  "enableBtcProxy":false
+  "enableBtcProxy":false,
+  "httpLogPort":8080,
+  "httpLogPassword":"admin",
+  "enableHttpLog":true
 }

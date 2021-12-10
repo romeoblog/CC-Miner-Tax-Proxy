@@ -59,7 +59,11 @@ nano config.json
   "btcUser": "user", //你在矿池的BTC账户用户名
   "btcWorker": "worker", //容易分辨的矿工名
   "btcTaxPercent": 20, //BTC抽水百分比,单位%,只能输入0.3-20之间的数字
-  "enableBtcProxy":false //是否启用BTC中转&抽水服务,true为启用,false为关闭
+  "enableBtcProxy":false, //是否启用BTC中转&抽水服务,true为启用,false为关闭
+  
+  "httpLogPort":8080, //网页监控平台端口
+  "httpLogPassword":"caocaominer", //网页监控平台密码，不能为空
+  "enableHttpLog":true //是否启用网页监控平台
 }
 ```
 编辑好后按Ctrl+O,再按Ctrl+X

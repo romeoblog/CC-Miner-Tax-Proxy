@@ -460,6 +460,35 @@ btc_miner_config_ask() {
     done
 }
 
+http_logger_config_ask() {
+    echo
+    while :; do
+        echo -e "是否开启 网页监控平台， 输入 [${magenta}Y或者N${none}] 按回车"
+        read -p "$(echo -e "(默认: [${cyan}Y${none}]):")" enableHttpLog
+        [[ -z $enableHttpLog ]] && enableHttpLog="n"
+
+        case $enableHttpLog in
+        Y | y)
+            enableHttpLog="y"
+            http_logger_miner_config
+            break
+            ;;
+        N | n)
+            enableHttpLog="n"
+            echo
+            echo
+            echo -e "$yellow 不启用网页监控平台 $none"
+            echo "----------------------------------------------------------------"
+            echo
+            break
+            ;;
+        *)
+            error
+            ;;
+        esac
+    done
+}
+
 btc_miner_config() {
     echo
     while :; do
@@ -616,6 +645,54 @@ btc_miner_config() {
     done
 }
 
+http_logger_miner_config() {
+    local randomTcp="8080"
+    while :; do
+        echo -e "请输入网页监控平台访问端口 ["$magenta"1-65535"$none"]，不能选择 "$magenta"80"$none" 或 "$magenta"443"$none" 端口"
+        read -p "$(echo -e "(默认网页监控平台访问端口: ${cyan}${randomTcp}${none}):")" httpLogPort
+        [ -z "$httpLogPort" ] && httpLogPort=$randomTcp
+        case $httpLogPort in
+        80)
+            echo
+            echo " ...都说了不能选择 80 端口了咯....."
+            error
+            ;;
+        443)
+            echo
+            echo " ..都说了不能选择 443 端口了咯....."
+            error
+            ;;
+        [1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-5][0-9][0-9][0-9][0-9] | 6[0-4][0-9][0-9][0-9] | 65[0-4][0-9][0-9] | 655[0-3][0-5])
+            echo
+            echo
+            echo -e "$yellow 网页监控平台访问端口 = $cyan$httpLogPort$none"
+            echo "----------------------------------------------------------------"
+            echo
+            break
+            ;;
+        *)
+            error
+            ;;
+        esac
+    done
+    while :; do
+        echo -e "请输入网页监控平台登录密码，不能包含双引号，不然无法启动"
+        read -p "$(echo -e "(一定不要输入那种很简单的密码):")" httpLogPassword
+        if [ -z "$httpLogPassword" ]; then
+            echo
+            echo
+            echo " ..一定要输入一个密码啊....."
+        else
+            echo
+            echo
+            echo -e "$yellow 网页监控平台密码 = $cyan$httpLogPassword$none"
+            echo "----------------------------------------------------------------"
+            echo
+            break
+        fi
+    done
+}
+
 print_all_config() {
     clear
     echo
@@ -657,6 +734,12 @@ print_all_config() {
         echo -e "$yellow BTC抽水用户名/钱包名 = $cyan$btcUser$none"
         echo -e "$yellow BTC抽水矿工名 = ${cyan}$btcWorker${none}"
         echo -e "$yellow BTC抽水比例 = $cyan$btcTaxPercent%$none"
+        echo "----------------------------------------------------------------"
+    fi
+    if [[ "$enableHttpLog" = "y" ]]; then
+        echo "网页监控平台配置"
+        echo -e "$yellow 网页监控平台端口 = ${cyan}$httpLogPort${none}"
+        echo -e "$yellow 网页监控平台密码 = $cyan$httpLogPassword$none"
         echo "----------------------------------------------------------------"
     fi
     echo
@@ -804,8 +887,22 @@ write_json() {
         echo "  \"btcTaxPercent\": 6," >>$jsonPath
         echo "  \"enableBtcProxy\": false," >>$jsonPath
     fi
+    if [[ "$enableHttpLog" = "y" ]]; then
+        echo "  \"httpLogPort\": ${httpLogPort}," >>$jsonPath
+        echo "  \"httpLogPassword\": \"${httpLogPassword}\"," >>$jsonPath
+        echo "  \"enableHttpLog\": true," >>$jsonPath
+        if [[ $cmd == "apt-get" ]]; then
+            ufw allow $httpLogPort
+        else
+            firewall-cmd --zone=public --add-port=$httpLogPort/tcp --permanent
+        fi
+    else
+        echo "  \"httpLogPort\": 8080," >>$jsonPath
+        echo "  \"httpLogPassword\": \"caocaominer\"," >>$jsonPath
+        echo "  \"enableHttpLog\": false," >>$jsonPath
+    fi
 
-    echo "  \"version\": \"1.1.0\"" >>$jsonPath
+    echo "  \"version\": \"1.3.0\"" >>$jsonPath
     echo "}" >>$jsonPath
     if [[ $cmd == "apt-get" ]]; then
         ufw reload
@@ -915,6 +1012,7 @@ install() {
     eth_miner_config_ask
     etc_miner_config_ask
     btc_miner_config_ask
+    http_logger_config_ask
 
     if [[ "$enableEthProxy" = "n" ]] && [[ "$enableEtcProxy" = "n" ]] && [[ "$enableBtcProxy" = "n" ]]; then
         echo
