@@ -465,7 +465,7 @@ http_logger_config_ask() {
     while :; do
         echo -e "是否开启 网页监控平台， 输入 [${magenta}Y或者N${none}] 按回车"
         read -p "$(echo -e "(默认: [${cyan}Y${none}]):")" enableHttpLog
-        [[ -z $enableHttpLog ]] && enableHttpLog="n"
+        [[ -z $enableHttpLog ]] && enableHttpLog="y"
 
         case $enableHttpLog in
         Y | y)
