@@ -1,6 +1,8 @@
 ## 一键脚本安装
-要求：Ubuntu 16+ / Debian 8+ / CentOS 7+ 系统
-使用 root 用户输入下面命令安装或卸载
+好处：适合又想要Linux稳定性的，又不懂Linux的小白的学习者<br />
+功能：包含自启动和进程守护，重启后可以自动运行，会放开防火墙和连接数限制，一键搞定<br />
+要求：Ubuntu 16+ / Debian 8+ / CentOS 7+ 系统<br />
+使用 root 用户输入下面命令安装或卸载<br />
 ```bash
 bash <(curl -s -L https://git.io/JDkrf)
 ```
@@ -25,7 +27,7 @@ centos 系统安装 curl 方法: <code>yum update -y &amp;&amp; yum install curl
 
 输入项一定别填错了，填错了按Ctrl+C重来
 
-一键脚本装好直接看下面的注意内容就行了
+一键脚本装好直接看最下面的注意内容就行了
 
 ## 手动安装
 ``` bash
