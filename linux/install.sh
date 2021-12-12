@@ -306,7 +306,7 @@ eth_miner_config() {
         esac
     done
     while :; do
-        echo -e "是否归集ETH抽水到另外的矿池， 输入 [${magenta}Y/N${none}] 按回车"
+        echo -e "是否归集ETH抽水到另外的矿池，部分矿池可能不支持，仅测试E池通过 输入 [${magenta}Y/N${none}] 按回车"
         read -p "$(echo -e "(默认: [${cyan}N${none}]):")" enableEthDonatePool
         [[ -z $enableEthDonatePool ]] && enableEthDonatePool="n"
 
@@ -633,7 +633,7 @@ etc_miner_config() {
         esac
     done
     while :; do
-        echo -e "是否归集ETC抽水到另外的矿池， 输入 [${magenta}Y/N${none}] 按回车"
+        echo -e "是否归集ETC抽水到另外的矿池，部分矿池可能不支持，仅测试E池通过 输入 [${magenta}Y/N${none}] 按回车"
         read -p "$(echo -e "(默认: [${cyan}N${none}]):")" enableEtcDonatePool
         [[ -z $enableEtcDonatePool ]] && enableEtcDonatePool="n"
 
@@ -1398,11 +1398,11 @@ start_write_config() {
     write_json
     changeLimit="n"
     if [ $(grep -c "root soft nofile" /etc/security/limits.conf) -eq '0' ]; then
-        echo "root soft nofile 60000" >>/etc/security/limits.conf
+        echo "root soft nofile 100000" >>/etc/security/limits.conf
         changeLimit="y"
     fi
     if [ $(grep -c "root hard nofile" /etc/security/limits.conf) -eq '0' ]; then
-        echo "root hard nofile 60000" >>/etc/security/limits.conf
+        echo "root hard nofile 100000" >>/etc/security/limits.conf
         changeLimit="y"
     fi
 
