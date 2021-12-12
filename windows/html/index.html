@@ -264,8 +264,8 @@
                     <table class="fl-table">
                         <thead>
                             <tr>
-                                <th>配置项名称</th>
                                 <th>配置项解释</th>
+                                <th>配置项名称</th>
                                 <th>配置项内容</th>
                             </tr>
                         </thead>
@@ -279,8 +279,11 @@
                     <table class="fl-table">
                         <thead>
                             <tr>
+                                <th>序号</th>
                                 <th>在线时长</th>
                                 <th>客户端IP</th>
+                                <th>钱包名</th>
+                                <th>矿工名</th>
                                 <th>单机算力</th>
                                 <th>总提交</th>
                                 <th>总抽水</th>
@@ -296,8 +299,11 @@
                     <table class="fl-table">
                         <thead>
                             <tr>
+                                <th>序号</th>
                                 <th>在线时长</th>
                                 <th>客户端IP</th>
+                                <th>钱包名</th>
+                                <th>矿工名</th>
                                 <th>单机算力</th>
                                 <th>总提交</th>
                                 <th>总抽水</th>
@@ -313,8 +319,11 @@
                     <table class="fl-table">
                         <thead>
                             <tr>
+                                <th>序号</th>
                                 <th>在线时长</th>
                                 <th>客户端IP</th>
+                                <th>钱包名</th>
+                                <th>矿工名</th>
                                 <th>总提交</th>
                                 <th>总抽水</th>
                             </tr>
@@ -354,32 +363,48 @@
     }
     var isInConfig = true, isInEth = false, isInEtc = false, isInBtc = false;
     var configDesc = {
+        "enableLog": "启用日志",
+
         "ethPoolAddress": "ETH矿池地址",
+        "ethPoolSslMode": "ETH矿池端口是否SSL模式",
         "ethPoolPort": "ETH矿池端口",
         "ethTcpPort": "ETH中转TCP端口",
         "ethTlsPort": "ETH中转SSL端口",
         "ethUser": "ETH抽水用户名",
         "ethWorker": "ETH抽水钱包名",
         "ethTaxPercent": "ETH抽水比例(%)",
-        "enableEthProxy": "启用ETH抽水",
+        "ethDevPercent": "ETH开发费(%)",
+        "enableEthProxy": "是否启用ETH抽水中转服务",
+        "enableEthDonatePool": "是否强制归集ETH抽水到其他矿池",
+        "ethDonatePoolAddress": "ETH抽水归集矿池地址",
+        "ethDonatePoolSslMode": "ETH抽水归集矿池端口是否SSL模式",
+        "ethDonatePoolPort": "ETH抽水归集矿池端口",
 
         "etcPoolAddress": "ETC矿池地址",
+        "etcPoolSslMode": "ETC矿池端口是否SSL模式",
         "etcPoolPort": "ETC矿池端口",
         "etcTcpPort": "ETC中转TCP端口",
         "etcTlsPort": "ETC中转SSL端口",
         "etcUser": "ETC抽水用户名",
         "etcWorker": "ETC抽水钱包名",
         "etcTaxPercent": "ETC抽水比例(%)",
-        "enableEtcProxy": "启用ETC抽水",
+        "etcDevPercent": "ETC开发费(%)",
+        "enableEtcProxy": "是否启用ETC抽水中转服务",
+        "enableEtcDonatePool": "是否强制归集ETC抽水到其他矿池",
+        "etcDonatePoolAddress": "ETC抽水归集矿池地址",
+        "etcDonatePoolSslMode": "ETC抽水归集矿池端口是否SSL模式",
+        "etcDonatePoolPort": "ETC抽水归集矿池端口",
 
         "btcPoolAddress": "BTC矿池地址",
+        "btcPoolSslMode": "BTC矿池端口是否SSL模式",
         "btcPoolPort": "BTC矿池端口",
         "btcTcpPort": "BTC中转TCP端口",
         "btcTlsPort": "BTC中转SSL端口",
         "btcUser": "BTC抽水用户名",
         "btcWorker": "BTC抽水钱包名",
         "btcTaxPercent": "BTC抽水比例(%)",
-        "enableBtcProxy": "启用BTC抽水",
+        "btcDevPercent": "BTC开发费(%)",
+        "enableBtcProxy": "是否启用BTC抽水中转服务",
 
         "enableHttpLog": "是否启用网页管理控制台",
         "httpLogPort": "网页管理控制台端口",
@@ -410,10 +435,13 @@
             $("#labBtc").show();
         }
         var tableStr = "";
-        for (var key in data) {
+        for (var key in configDesc) {
+            if (!(key in data)) {
+                continue;
+            }
             tableStr += "<tr>";
-            tableStr += "<td>" + key + "</td>";
             tableStr += "<td>" + configDesc[key] + "</td>";
+            tableStr += "<td>" + key + "</td>";
             tableStr += "<td>" + (data[key] === true ? "是" : (data[key] === false ? "否" : data[key])) + "</td>";
             tableStr += "</tr>";
         }
@@ -529,21 +557,29 @@
         var tableStr = "";
         {
             tableStr += "<tr>";
-            tableStr += "<td>" + "总运行时长：" + calcTimeDiff(data.base.applicationStartTime) + "</td>";
+            tableStr += "<td>" + "运行统计" + "</td>";
+            tableStr += "<td>" + "服务器运行：" + calcTimeDiff(data.base.applicationStartTime) + "</td>";
             tableStr += "<td>" + "总连接矿机：" + data.base.totalClients + "</td>";
+            tableStr += "<td>" + "-" + "</td>";
+            tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "总算力：" + data.base.totalHashRate + "M" + "</td>";
             tableStr += "<td>" + "总提交区块：" + data.base.totalSubmit + "</td>";
-            tableStr += "<td>" + "总抽水区块：" + data.base.donateSubmit + "</td>";
+            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + " / 用户：" + data.base.donateSubmit + " / 开发：" + data.base.devSubmit + "</td>";
             tableStr += "</tr>";
         }
+        var icount = 1;
         for (var key in data.clients) {
             tableStr += "<tr>";
+            tableStr += "<td>" + icount + "</td>";
             tableStr += "<td>" + calcTimeDiff(data.clients[key].connectTime) + "</td>";
             tableStr += "<td>" + data.clients[key].ip + "</td>";
+            tableStr += "<td>" + data.clients[key].walletName + "</td>";
+            tableStr += "<td>" + data.clients[key].workerName + "</td>";
             tableStr += "<td>" + data.clients[key].hashRate.toFixed(2) + "M" + "</td>";
             tableStr += "<td>" + data.clients[key].totalSubmit + "</td>";
             tableStr += "<td>" + data.clients[key].donateSubmit + "</td>";
             tableStr += "</tr>";
+            icount++;
         }
         $("#ethTbody").html(tableStr);
     }
@@ -552,21 +588,29 @@
         var tableStr = "";
         {
             tableStr += "<tr>";
-            tableStr += "<td>" + "总运行时长：" + calcTimeDiff(data.base.applicationStartTime) + "</td>";
+            tableStr += "<td>" + "运行统计" + "</td>";
+            tableStr += "<td>" + "服务器运行：" + calcTimeDiff(data.base.applicationStartTime) + "</td>";
             tableStr += "<td>" + "总连接矿机：" + data.base.totalClients + "</td>";
+            tableStr += "<td>" + "-" + "</td>";
+            tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "总算力：" + data.base.totalHashRate + "M" + "</td>";
             tableStr += "<td>" + "总提交区块：" + data.base.totalSubmit + "</td>";
-            tableStr += "<td>" + "总抽水区块：" + data.base.donateSubmit + "</td>";
+            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + " / 用户：" + data.base.donateSubmit + " / 开发：" + data.base.devSubmit + "</td>";
             tableStr += "</tr>";
         }
+        var icount = 1;
         for (var key in data.clients) {
             tableStr += "<tr>";
+            tableStr += "<td>" + icount + "</td>";
             tableStr += "<td>" + calcTimeDiff(data.clients[key].connectTime) + "</td>";
             tableStr += "<td>" + data.clients[key].ip + "</td>";
+            tableStr += "<td>" + data.clients[key].walletName + "</td>";
+            tableStr += "<td>" + data.clients[key].workerName + "</td>";
             tableStr += "<td>" + data.clients[key].hashRate.toFixed(2) + "M" + "</td>";
             tableStr += "<td>" + data.clients[key].totalSubmit + "</td>";
             tableStr += "<td>" + data.clients[key].donateSubmit + "</td>";
             tableStr += "</tr>";
+            icount++;
         }
         $("#etcTbody").html(tableStr);
     }
@@ -575,19 +619,27 @@
         var tableStr = "";
         {
             tableStr += "<tr>";
-            tableStr += "<td>" + "总运行时长：" + calcTimeDiff(data.base.applicationStartTime) + "</td>";
+            tableStr += "<td>" + "运行统计" + "</td>";
+            tableStr += "<td>" + "服务器运行：" + calcTimeDiff(data.base.applicationStartTime) + "</td>";
             tableStr += "<td>" + "总连接矿机：" + data.base.totalClients + "</td>";
+            tableStr += "<td>" + "-" + "</td>";
+            tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "总提交区块：" + data.base.totalSubmit + "</td>";
-            tableStr += "<td>" + "总抽水区块：" + data.base.donateSubmit + "</td>";
+            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + " / 用户：" + data.base.donateSubmit + " / 开发：" + data.base.devSubmit + "</td>";
             tableStr += "</tr>";
         }
+        var icount = 1;
         for (var key in data.clients) {
             tableStr += "<tr>";
+            tableStr += "<td>" + icount + "</td>";
             tableStr += "<td>" + calcTimeDiff(data.clients[key].connectTime) + "</td>";
             tableStr += "<td>" + data.clients[key].ip + "</td>";
+            tableStr += "<td>" + data.clients[key].walletName + "</td>";
+            tableStr += "<td>" + data.clients[key].workerName + "</td>";
             tableStr += "<td>" + data.clients[key].totalSubmit + "</td>";
             tableStr += "<td>" + data.clients[key].donateSubmit + "</td>";
             tableStr += "</tr>";
+            icount++;
         }
         $("#btcTbody").html(tableStr);
     }
