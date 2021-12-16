@@ -1352,7 +1352,7 @@ write_json() {
         echo "  \"enableHttpLog\": false," >>$jsonPath
     fi
 
-    echo "  \"version\": \"1.3.0\"" >>$jsonPath
+    echo "  \"version\": \"4.0.0\"" >>$jsonPath
     echo "}" >>$jsonPath
     if [[ $cmd == "apt-get" ]]; then
         ufw reload
@@ -1437,9 +1437,7 @@ start_write_config() {
     echo
     echo " 大佬...安装好了...去$installPath/logs/里看日志吧"
     echo
-    echo " 大佬，如果你要用凤凰内核走SSL模式，记得自己申请下域名证书，然后替换掉$installPath/key.key和$installPath/cer.crt哦，不然凤凰内核跑不了SSL的，别的内核没事"
-    echo
-    echo " 大佬，如果你要用凤凰内核走SSL模式，记得自己申请下域名证书，然后替换掉$installPath/key.key和$installPath/cer.crt哦，不然凤凰内核跑不了SSL的，别的内核没事"
+    echo " 大佬，如果你要用域名走SSL模式，记得自己申请下域名证书，然后替换掉$installPath/key.pem和$installPath/cer.pem哦，不然很多内核不支持自签名证书的"
     echo
     if [[ "$changeLimit" = "y" ]]; then
         echo " 大佬，系统连接数限制已经改了，记得重启一次哦"
