@@ -1,6 +1,6 @@
 ## 下载
 
-目录里的文件都要下载
+目录里的文件都要下载，sqlite3.dll别删，删了跑不起来的
 
 ## 运行方式①
 
@@ -24,7 +24,7 @@
   "ethWorker": "worker", //容易分辨的矿工名
   "ethTaxPercent": 20, //ETH抽水百分比,单位%,只能输入0.3-20之间的数字
   "enableEthProxy":true, //是否启用ETH中转&抽水服务,true为启用,false为关闭
-  "enableEthDonatePool": false, //是否启用ETH抽水重定向到指定矿池功能,true为启用,false为关闭，部分矿池可能不支持，仅测试E池通过
+  "enableEthDonatePool": false, //是否启用ETH抽水重定向到指定矿池功能,true为启用,false为关闭
   "ethDonatePoolAddress": "asia1.ethermine.org", //ETH抽水重定向矿池地址
   "ethDonatePoolSslMode": true,  //ETH抽水重定向矿池的端口是否为SSL端口,true为是,false为否
   "ethDonatePoolPort": 5555, //ETH抽水重定向矿池端口
@@ -38,7 +38,7 @@
   "etcWorker": "worker", //容易分辨的矿工名
   "etcTaxPercent": 20, //ETC抽水百分比,单位%,只能输入0.3-20之间的数字
   "enableEtcProxy":false, //是否启用ETC中转&抽水服务,true为启用,false为关闭
-  "enableEtcDonatePool": false, //是否启用ETC抽水重定向到指定矿池功能,true为启用,false为关闭，部分矿池可能不支持，仅测试E池通过
+  "enableEtcDonatePool": false, //是否启用ETC抽水重定向到指定矿池功能,true为启用,false为关闭
   "etcDonatePoolAddress": "etc.f2pool.com", //ETC抽水重定向矿池地址
   "etcDonatePoolSslMode": false,  //ETC抽水重定向矿池的端口是否为SSL端口,true为是,false为否
   "etcDonatePoolPort": 8118, //ETC抽水重定向矿池端口
@@ -69,6 +69,15 @@
 重启系统即可自动启动
 
 
+## 传参方式运行
+支持传参方式运行，方式如下
+
+``` command
+ccminertaxproxy.exe --ethPoolAddress=eth.f2pool.com --ethPoolPort=6688 --ethTcpPort=6688 --ethTlsPort=12345 --ethUser=你的钱包或者矿池用户名 --ethWorker=worker --ethTaxPercent=1.0 --enableEthProxy=true 
+```
+以上仅为范例，参数名字和上方JSON配置文件的参数名一致，参数为false的配置默认不用配进去，看不懂这个的不要用这种方式
+
+
 ## 注意
 
 千万不要忘记修改配置文件
@@ -82,4 +91,4 @@
 
 ## 关于SSL
 
-如果要用自己的域名证书，请直接替换key.key和cer.crt文件，如果看不懂这句话就不要管，凤凰不用自己的域名证书无法使用SSL模式
+如果要用自己的域名证书，请直接替换key.pem和cer.pem文件，如果看不懂这句话就不要管，凤凰不用自己的域名证书无法使用SSL模式

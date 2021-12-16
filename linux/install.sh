@@ -1159,12 +1159,12 @@ print_all_config() {
 install_download() {
     $cmd update -y
     if [[ $cmd == "apt-get" ]]; then
-        $cmd install -y lrzsz git zip unzip curl wget supervisor
+        $cmd install -y lrzsz git zip unzip curl wget supervisor libsqlite3-0 libsqlite3-dev
         service supervisor restart
     else
         $cmd install -y epel-release
         $cmd update -y
-        $cmd install -y lrzsz git zip unzip curl wget supervisor
+        $cmd install -y lrzsz git zip unzip curl wget supervisor sqlite-devel
         systemctl enable supervisord
         service supervisord restart
     fi
@@ -1356,7 +1356,7 @@ write_json() {
     echo "}" >>$jsonPath
     if [[ $cmd == "apt-get" ]]; then
         ufw reload
-    else
+    elif [ $(systemctl is-active firewalld) = 'active' ]; then
         systemctl restart firewalld
     fi
 }
@@ -1396,14 +1396,37 @@ start_write_config() {
         exit 1
     fi
     write_json
+
+    echo
+    while :; do
+        echo -e "需要修改系统连接数限制吗，确认输入Y，可选输入项[${magenta}Y/N${none}] 按回车"
+        read -p "$(echo -e "(默认: [${cyan}Y${none}]):")" needChangeLimit
+        [[ -z $needChangeLimit ]] && needChangeLimit="y"
+
+        case $needChangeLimit in
+        Y | y)
+            needChangeLimit="y"
+            break
+            ;;
+        N | n)
+            needChangeLimit="n"
+            break
+            ;;
+        *)
+            error
+            ;;
+        esac
+    done
     changeLimit="n"
-    if [ $(grep -c "root soft nofile" /etc/security/limits.conf) -eq '0' ]; then
-        echo "root soft nofile 100000" >>/etc/security/limits.conf
-        changeLimit="y"
-    fi
-    if [ $(grep -c "root hard nofile" /etc/security/limits.conf) -eq '0' ]; then
-        echo "root hard nofile 100000" >>/etc/security/limits.conf
-        changeLimit="y"
+    if [[ "$needChangeLimit" = "y" ]]; then
+        if [ $(grep -c "root soft nofile" /etc/security/limits.conf) -eq '0' ]; then
+            echo "root soft nofile 100000" >>/etc/security/limits.conf
+            changeLimit="y"
+        fi
+        if [ $(grep -c "root hard nofile" /etc/security/limits.conf) -eq '0' ]; then
+            echo "root hard nofile 100000" >>/etc/security/limits.conf
+            changeLimit="y"
+        fi
     fi
 
     clear

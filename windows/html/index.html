@@ -9,7 +9,7 @@
         /*
         CSS for the main interaction
        */
-        .tabset>input[type="radio"] {
+        .tabset > input[type="radio"] {
             position: absolute;
             left: -200vw;
         }
@@ -18,12 +18,12 @@
             display: none;
         }
 
-        .tabset>input:first-child:checked~.tab-panels>.tab-panel:first-child,
-        .tabset>input:nth-child(3):checked~.tab-panels>.tab-panel:nth-child(2),
-        .tabset>input:nth-child(5):checked~.tab-panels>.tab-panel:nth-child(3),
-        .tabset>input:nth-child(7):checked~.tab-panels>.tab-panel:nth-child(4),
-        .tabset>input:nth-child(9):checked~.tab-panels>.tab-panel:nth-child(5),
-        .tabset>input:nth-child(11):checked~.tab-panels>.tab-panel:nth-child(6) {
+        .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+        .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+        .tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+        .tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+        .tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+        .tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
             display: block;
         }
 
@@ -36,7 +36,7 @@
             font-weight: 300;
         }
 
-        .tabset>label {
+        .tabset > label {
             position: relative;
             display: inline-block;
             padding: 15px 15px 25px;
@@ -46,7 +46,7 @@
             font-weight: 600;
         }
 
-        .tabset>label::after {
+        .tabset > label::after {
             content: "";
             position: absolute;
             left: 15px;
@@ -56,18 +56,18 @@
             background: #8d8d8d;
         }
 
-        .tabset>label:hover,
-        .tabset>input:focus+label {
+        .tabset > label:hover,
+        .tabset > input:focus + label {
             color: #06c;
         }
 
-        .tabset>label:hover::after,
-        .tabset>input:focus+label::after,
-        .tabset>input:checked+label::after {
+        .tabset > label:hover::after,
+        .tabset > input:focus + label::after,
+        .tabset > input:checked + label::after {
             background: #06c;
         }
 
-        .tabset>input:checked+label {
+        .tabset > input:checked + label {
             border-color: #ccc;
             border-bottom: 1px solid #fff;
             margin-bottom: -1px;
@@ -236,108 +236,108 @@
 </head>
 
 <body>
-    <div id="main" class="tabset" style="display: none;">
+<div id="main" class="tabset" style="display: none;">
 
-        <!-- Tab 0 -->
-        <input type="radio" name="tabset" id="tabConfig" aria-controls="secConfig" onclick="onConfigClick()" checked>
-        <label for="tabConfig">中转配置</label>
-        <!-- Tab 1 -->
-        <input type="radio" name="tabset" id="tabEth" aria-controls="secEth" onclick="onEthClick()"
-            style="display: none;">
-        <label for="tabEth" id="labEth" style="display: none;">ETH信息</label>
-        <!-- Tab 2 -->
-        <input type="radio" name="tabset" id="tabEtc" aria-controls="secEtc" onclick="onEtcClick()"
-            style="display: none;">
-        <label for="tabEtc" id="labEtc" style="display: none;">ETC信息</label>
-        <!-- Tab 3 -->
-        <input type="radio" name="tabset" id="tabBtc" aria-controls="secBtc" onclick="onBtcClick()"
-            style="display: none;">
-        <label for="tabBtc" id="labBtc" style="display: none;">BTC信息</label>
+    <!-- Tab 0 -->
+    <input type="radio" name="tabset" id="tabConfig" aria-controls="secConfig" onclick="onConfigClick()" checked>
+    <label for="tabConfig">中转配置</label>
+    <!-- Tab 1 -->
+    <input type="radio" name="tabset" id="tabEth" aria-controls="secEth" onclick="onEthClick()"
+           style="display: none;">
+    <label for="tabEth" id="labEth" style="display: none;">ETH信息</label>
+    <!-- Tab 2 -->
+    <input type="radio" name="tabset" id="tabEtc" aria-controls="secEtc" onclick="onEtcClick()"
+           style="display: none;">
+    <label for="tabEtc" id="labEtc" style="display: none;">ETC信息</label>
+    <!-- Tab 3 -->
+    <input type="radio" name="tabset" id="tabBtc" aria-controls="secBtc" onclick="onBtcClick()"
+           style="display: none;">
+    <label for="tabBtc" id="labBtc" style="display: none;">BTC信息</label>
 
-        <a id="logButton" href="/log.html" target="_blank">
-            查看原始日志
-        </a>
+    <a id="logButton" href="/log.html" target="_blank">
+        查看原始日志
+    </a>
 
-        <div class="tab-panels">
-            <section id="secConfig" class="tab-panel">
-                <div id="tableConfig">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>配置项解释</th>
-                                <th>配置项名称</th>
-                                <th>配置项内容</th>
-                            </tr>
-                        </thead>
-                        <tbody id="configTbody">
-                        <tbody>
-                    </table>
-                </div>
-            </section>
-            <section id="secEth" class="tab-panel">
-                <div id="tableEth">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>在线时长</th>
-                                <th>客户端IP</th>
-                                <th>钱包名</th>
-                                <th>矿工名</th>
-                                <th>单机算力</th>
-                                <th>总提交</th>
-                                <th>总抽水</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ethTbody">
-                        <tbody>
-                    </table>
-                </div>
-            </section>
-            <section id="secEtc" class="tab-panel">
-                <div id="tableEtc">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>在线时长</th>
-                                <th>客户端IP</th>
-                                <th>钱包名</th>
-                                <th>矿工名</th>
-                                <th>单机算力</th>
-                                <th>总提交</th>
-                                <th>总抽水</th>
-                            </tr>
-                        </thead>
-                        <tbody id="etcTbody">
-                        <tbody>
-                    </table>
-                </div>
-            </section>
-            <section id="secBtc" class="tab-panel">
-                <div id="tableBtc">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>在线时长</th>
-                                <th>客户端IP</th>
-                                <th>钱包名</th>
-                                <th>矿工名</th>
-                                <th>总提交</th>
-                                <th>总抽水</th>
-                            </tr>
-                        </thead>
-                        <tbody id="btcTbody">
-                        <tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
+    <div class="tab-panels">
+        <section id="secConfig" class="tab-panel">
+            <div id="tableConfig">
+                <table class="fl-table">
+                    <thead>
+                    <tr>
+                        <th>配置项解释</th>
+                        <th>配置项名称</th>
+                        <th>配置项内容</th>
+                    </tr>
+                    </thead>
+                    <tbody id="configTbody">
+                    <tbody>
+                </table>
+            </div>
+        </section>
+        <section id="secEth" class="tab-panel">
+            <div id="tableEth">
+                <table class="fl-table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>在线时长</th>
+                        <th>客户端IP</th>
+                        <th>钱包名</th>
+                        <th>矿工名</th>
+                        <th>单机算力</th>
+                        <th>总提交</th>
+                        <th>总抽水</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ethTbody">
+                    <tbody>
+                </table>
+            </div>
+        </section>
+        <section id="secEtc" class="tab-panel">
+            <div id="tableEtc">
+                <table class="fl-table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>在线时长</th>
+                        <th>客户端IP</th>
+                        <th>钱包名</th>
+                        <th>矿工名</th>
+                        <th>单机算力</th>
+                        <th>总提交</th>
+                        <th>总抽水</th>
+                    </tr>
+                    </thead>
+                    <tbody id="etcTbody">
+                    <tbody>
+                </table>
+            </div>
+        </section>
+        <section id="secBtc" class="tab-panel">
+            <div id="tableBtc">
+                <table class="fl-table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>在线时长</th>
+                        <th>客户端IP</th>
+                        <th>钱包名</th>
+                        <th>矿工名</th>
+                        <th>总提交</th>
+                        <th>总抽水</th>
+                    </tr>
+                    </thead>
+                    <tbody id="btcTbody">
+                    <tbody>
+                </table>
+            </div>
+        </section>
     </div>
-    </div>
-    <div id="timer" style="display: none;"></div>
+
+</div>
+</div>
+<div id="timer" style="display: none;"></div>
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/timer.jquery/0.9.0/timer.jquery.min.js"></script>
@@ -361,6 +361,7 @@
         }
         return Math.floor(diff / 86400) + "天" + Math.floor((diff % 86400) / 3600) + "时" + Math.floor(((diff % 86400) % 3600) / 60) + "分" + (((diff % 86400) % 3600) % 60) + "秒"
     }
+
     var isInConfig = true, isInEth = false, isInEtc = false, isInBtc = false;
     var configDesc = {
         "enableLog": "启用日志",
@@ -449,15 +450,20 @@
     }
 
     function onConfigClick() {
-        if (isInConfig) { return; }
+        if (isInConfig) {
+            return;
+        }
         isInConfig = true;
         isInEth = false;
         isInEtc = false;
         isInBtc = false;
         $('#timer').timer("remove");
     }
+
     function onEthClick() {
-        if (isInEth) { return; }
+        if (isInEth) {
+            return;
+        }
         isInConfig = false;
         isInEth = true;
         isInEtc = false;
@@ -472,8 +478,11 @@
             repeat: true
         });
     }
+
     function onEtcClick() {
-        if (isInEtc) { return; }
+        if (isInEtc) {
+            return;
+        }
         isInConfig = false;
         isInEth = false;
         isInEtc = true;
@@ -488,8 +497,11 @@
             repeat: true
         });
     }
+
     function onBtcClick() {
-        if (isInBtc) { return; }
+        if (isInBtc) {
+            return;
+        }
         isInConfig = false;
         isInEth = false;
         isInEtc = false;
@@ -562,9 +574,9 @@
             tableStr += "<td>" + "总连接矿机：" + data.base.totalClients + "</td>";
             tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "-" + "</td>";
-            tableStr += "<td>" + "总算力：" + data.base.totalHashRate + "M" + "</td>";
+            tableStr += "<td>" + "总算力：" + data.base.totalHashRate.toFixed(2) + "M" + "</td>";
             tableStr += "<td>" + "总提交区块：" + data.base.totalSubmit + "</td>";
-            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + " / 用户：" + data.base.donateSubmit + " / 开发：" + data.base.devSubmit + "</td>";
+            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + "&nbsp;&nbsp;/&nbsp;&nbsp;用户：" + data.base.donateSubmit + "&nbsp;&nbsp;/&nbsp;&nbsp;开发：" + data.base.devSubmit + "</td>";
             tableStr += "</tr>";
         }
         var icount = 1;
@@ -577,7 +589,7 @@
             tableStr += "<td>" + data.clients[key].workerName + "</td>";
             tableStr += "<td>" + data.clients[key].hashRate.toFixed(2) + "M" + "</td>";
             tableStr += "<td>" + data.clients[key].totalSubmit + "</td>";
-            tableStr += "<td>" + data.clients[key].donateSubmit + "</td>";
+            tableStr += "<td>" + "用户：" + data.clients[key].donateSubmit + "&nbsp;&nbsp;/&nbsp;&nbsp;开发：" + data.clients[key].devSubmit + "</td>";
             tableStr += "</tr>";
             icount++;
         }
@@ -593,9 +605,9 @@
             tableStr += "<td>" + "总连接矿机：" + data.base.totalClients + "</td>";
             tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "-" + "</td>";
-            tableStr += "<td>" + "总算力：" + data.base.totalHashRate + "M" + "</td>";
+            tableStr += "<td>" + "总算力：" + data.base.totalHashRate.toFixed(2) + "M" + "</td>";
             tableStr += "<td>" + "总提交区块：" + data.base.totalSubmit + "</td>";
-            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + " / 用户：" + data.base.donateSubmit + " / 开发：" + data.base.devSubmit + "</td>";
+            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + "&nbsp;&nbsp;/&nbsp;&nbsp;用户：" + data.base.donateSubmit + "&nbsp;&nbsp;/&nbsp;&nbsp;开发：" + data.base.devSubmit + "</td>";
             tableStr += "</tr>";
         }
         var icount = 1;
@@ -608,7 +620,7 @@
             tableStr += "<td>" + data.clients[key].workerName + "</td>";
             tableStr += "<td>" + data.clients[key].hashRate.toFixed(2) + "M" + "</td>";
             tableStr += "<td>" + data.clients[key].totalSubmit + "</td>";
-            tableStr += "<td>" + data.clients[key].donateSubmit + "</td>";
+            tableStr += "<td>" + "用户：" + data.clients[key].donateSubmit + "&nbsp;&nbsp;/&nbsp;&nbsp;开发：" + data.clients[key].devSubmit + "</td>";
             tableStr += "</tr>";
             icount++;
         }
@@ -625,7 +637,7 @@
             tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "-" + "</td>";
             tableStr += "<td>" + "总提交区块：" + data.base.totalSubmit + "</td>";
-            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + " / 用户：" + data.base.donateSubmit + " / 开发：" + data.base.devSubmit + "</td>";
+            tableStr += "<td>" + "总抽水：" + (data.base.donateSubmit + data.base.devSubmit) + "&nbsp;&nbsp;/&nbsp;&nbsp;用户：" + data.base.donateSubmit + "&nbsp;&nbsp;/&nbsp;&nbsp;开发：" + data.base.devSubmit + "</td>";
             tableStr += "</tr>";
         }
         var icount = 1;
@@ -637,7 +649,7 @@
             tableStr += "<td>" + data.clients[key].walletName + "</td>";
             tableStr += "<td>" + data.clients[key].workerName + "</td>";
             tableStr += "<td>" + data.clients[key].totalSubmit + "</td>";
-            tableStr += "<td>" + data.clients[key].donateSubmit + "</td>";
+            tableStr += "<td>" + "用户：" + data.clients[key].donateSubmit + "&nbsp;&nbsp;/&nbsp;&nbsp;开发：" + data.clients[key].devSubmit + "</td>";
             tableStr += "</tr>";
             icount++;
         }

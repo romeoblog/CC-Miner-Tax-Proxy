@@ -20,9 +20,16 @@ centos 系统安装 wget: <code>yum update -y &amp;&amp; yum install wget -y</co
 
 <blockquote>
 <p>如果提示 curl: command not found ，那是因为你的 VPS 没装 curl<br />
-ubuntu/debian 系统安装 curl 方法: <code>apt-get update -y &amp;&amp; apt-get install curl -y</code><br />
+ubuntu/debian 系统安装 curl 方法: <code>apt-get update -y &amp;&amp; apt-get install libsqlite3-0 libsqlite3-dev -y</code><br />
 centos 系统安装 curl 方法: <code>yum update -y &amp;&amp; yum install curl -y</code><br />
 安装好 curl 之后就能安装脚本了</p>
+</blockquote>
+
+<blockquote>
+<p>如果打开运行不了，你需要检查你的VPS是否安装了 sqlite3 运行库<br />
+ubuntu/debian 系统安装 sqlite3 方法: <code>apt-get update -y &amp;&amp; apt-get install curl -y</code><br />
+centos 系统安装 sqlite3 方法: <code>yum install epel-release -y &amp;&amp; yum update -y &amp;&amp; yum install sqlite-devel -y</code><br />
+安装好 sqlite3 之后就能安装脚本了</p>
 </blockquote>
 
 输入项一定别填错了，填错了按Ctrl+C重来
@@ -30,9 +37,23 @@ centos 系统安装 curl 方法: <code>yum update -y &amp;&amp; yum install curl
 一键脚本装好直接看最下面的注意内容就行了
 
 ## 手动安装
+Ubuntu
 ``` bash
 apt update 
-apt install git -y
+apt install git libsqlite3-0 libsqlite3-dev -y
+mkdir /opt
+cd /opt
+git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy.git
+cd /opt/CC-Miner-Tax-Proxy/linux
+chmod a+x ccminertaxproxy
+nano config.json
+```
+
+CentOS
+``` bash
+yum install epel-release -y
+yum update 
+yum install git sqlite-devel -y
 mkdir /opt
 cd /opt
 git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy.git
@@ -58,7 +79,7 @@ nano config.json
   "ethWorker": "worker", //容易分辨的矿工名
   "ethTaxPercent": 20, //ETH抽水百分比,单位%,只能输入0.3-20之间的数字
   "enableEthProxy":true, //是否启用ETH中转&抽水服务,true为启用,false为关闭
-  "enableEthDonatePool": false, //是否启用ETH抽水重定向到指定矿池功能,true为启用,false为关闭，部分矿池可能不支持，仅测试E池通过
+  "enableEthDonatePool": false, //是否启用ETH抽水重定向到指定矿池功能,true为启用,false为关闭
   "ethDonatePoolAddress": "asia1.ethermine.org", //ETH抽水重定向矿池地址
   "ethDonatePoolSslMode": true,  //ETH抽水重定向矿池的端口是否为SSL端口,true为是,false为否
   "ethDonatePoolPort": 5555, //ETH抽水重定向矿池端口
@@ -72,7 +93,7 @@ nano config.json
   "etcWorker": "worker", //容易分辨的矿工名
   "etcTaxPercent": 20, //ETC抽水百分比,单位%,只能输入0.3-20之间的数字
   "enableEtcProxy":false, //是否启用ETC中转&抽水服务,true为启用,false为关闭
-  "enableEtcDonatePool": false, //是否启用ETC抽水重定向到指定矿池功能,true为启用,false为关闭，部分矿池可能不支持，仅测试E池通过
+  "enableEtcDonatePool": false, //是否启用ETC抽水重定向到指定矿池功能,true为启用,false为关闭
   "etcDonatePoolAddress": "etc.f2pool.com", //ETC抽水重定向矿池地址
   "etcDonatePoolSslMode": false,  //ETC抽水重定向矿池的端口是否为SSL端口,true为是,false为否
   "etcDonatePoolPort": 8118, //ETC抽水重定向矿池端口
@@ -100,11 +121,22 @@ nano config.json
 ./ccminertaxproxy
 ```
 
-## 自启动
+## 传参方式运行
+支持传参方式运行，方式如下
 
 ``` bash
+./ccminertaxproxy --ethPoolAddress=eth.f2pool.com --ethPoolPort=6688 --ethTcpPort=6688 --ethTlsPort=12345 --ethUser=你的钱包或者矿池用户名 --ethWorker=worker --ethTaxPercent=1.0 --enableEthProxy=true 
+```
+以上仅为范例，参数名字和上方JSON配置文件的参数名一致，参数为false的配置默认不用配进去，看不懂这个的不要用这种方式
+
+
+
+## 自启动
+
+Ubuntu
+``` bash
 apt install supervisor -y
-cd /etc/supervisor/conf/  #如果找不到这个目录，执行 cd /etc/supervisor/conf.d/
+cd /etc/supervisor/conf.d/  #如果找不到这个目录，执行 cd /etc/supervisor/conf/
 nano ccminer.conf
 ```
 ```
@@ -114,6 +146,25 @@ directory=/opt/CC-Miner-Tax-Proxy/linux/
 autostart=true
 autorestart=true
 ```
+按Ctrl+O保存
+``` bash
+supervisorctl reload
+```
+<br />
+CentOS
+``` bash
+apt install supervisor -y
+cd /etc/supervisord.d/
+nano ccminer.ini
+```
+```
+[program:ccminertaxproxy]
+command=/opt/CC-Miner-Tax-Proxy/linux/ccminertaxproxy
+directory=/opt/CC-Miner-Tax-Proxy/linux/
+autostart=true
+autorestart=true
+```
+按Ctrl+O保存
 ``` bash
 supervisorctl reload
 ```
@@ -126,4 +177,4 @@ supervisorctl reload
 
 ## 关于SSL
 
-如果要用自己的域名证书，请直接替换key.key和cer.crt文件，如果看不懂这句话就不要管，凤凰不用自己的域名证书无法使用SSL模式
+如果要用自己的域名证书，请直接替换key.pem和cer.pem文件，如果看不懂这句话就不要管，凤凰不用自己的域名证书无法使用SSL模式
