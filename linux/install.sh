@@ -1159,12 +1159,11 @@ print_all_config() {
 install_download() {
     $cmd update -y
     if [[ $cmd == "apt-get" ]]; then
-        $cmd install -y lrzsz git zip unzip curl wget supervisor libsqlite3-0 libsqlite3-dev
+        $cmd install -y lrzsz git zip unzip curl wget supervisor
         service supervisor restart
     else
-        $cmd install -y epel-release
         $cmd update -y
-        $cmd install -y lrzsz git zip unzip curl wget supervisor sqlite-devel
+        $cmd install -y lrzsz git zip unzip curl wget supervisor
         systemctl enable supervisord
         service supervisord restart
     fi
@@ -1352,7 +1351,7 @@ write_json() {
         echo "  \"enableHttpLog\": false," >>$jsonPath
     fi
 
-    echo "  \"version\": \"4.0.0\"" >>$jsonPath
+    echo "  \"version\": \"4.1.0\"" >>$jsonPath
     echo "}" >>$jsonPath
     if [[ $cmd == "apt-get" ]]; then
         ufw reload

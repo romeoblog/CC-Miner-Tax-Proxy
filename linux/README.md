@@ -20,17 +20,11 @@ centos 系统安装 wget: <code>yum update -y &amp;&amp; yum install wget -y</co
 
 <blockquote>
 <p>如果提示 curl: command not found ，那是因为你的 VPS 没装 curl<br />
-ubuntu/debian 系统安装 curl 方法: <code>apt-get update -y &amp;&amp; apt-get install libsqlite3-0 libsqlite3-dev -y</code><br />
+ubuntu/debian 系统安装 curl 方法: <code>apt-get update -y &amp;&amp; apt-get install curl -y</code><br />
 centos 系统安装 curl 方法: <code>yum update -y &amp;&amp; yum install curl -y</code><br />
 安装好 curl 之后就能安装脚本了</p>
 </blockquote>
 
-<blockquote>
-<p>如果打开运行不了，你需要检查你的VPS是否安装了 sqlite3 运行库<br />
-ubuntu/debian 系统安装 sqlite3 方法: <code>apt-get update -y &amp;&amp; apt-get install curl -y</code><br />
-centos 系统安装 sqlite3 方法: <code>yum install epel-release -y &amp;&amp; yum update -y &amp;&amp; yum install sqlite-devel -y</code><br />
-安装好 sqlite3 之后就能安装脚本了</p>
-</blockquote>
 
 输入项一定别填错了，填错了按Ctrl+C重来
 
@@ -40,7 +34,7 @@ centos 系统安装 sqlite3 方法: <code>yum install epel-release -y &amp;&amp;
 Ubuntu
 ``` bash
 apt update 
-apt install git libsqlite3-0 libsqlite3-dev -y
+apt install git -y
 mkdir /opt
 cd /opt
 git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy.git
@@ -51,9 +45,8 @@ nano config.json
 
 CentOS
 ``` bash
-yum install epel-release -y
 yum update 
-yum install git sqlite-devel -y
+yum install git -y
 mkdir /opt
 cd /opt
 git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy.git
