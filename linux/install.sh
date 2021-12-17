@@ -783,7 +783,7 @@ install_download() {
     fi
     [ -d /tmp/ccminer ] && rm -rf /tmp/ccminer
     mkdir -p /tmp/ccminer
-    git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy -b master /tmp/ccminer/gitcode --depth=1
+    git clone https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy -b release /tmp/ccminer/gitcode --depth=1
 
     if [[ ! -d /tmp/ccminer/gitcode ]]; then
         echo
