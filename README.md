@@ -4,11 +4,11 @@
 我这个不是MinerProxy那个，老矿牛逼，我支持老矿
 
 ## 使用方法
-[Windows](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/master/windows/)
+[Windows](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/release/windows/)
 
-[Linux](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/master/linux/)(支持一键脚本安装)
+[Linux](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/release/linux/)(支持一键脚本安装)
 
-[MacOs](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/master/linux/)
+[MacOs](https://github.com/CaoCaoMiner/CC-Miner-Tax-Proxy/tree/release/linux/)
 
 所有版本均包含一个网页版的监控平台，可配置是否启用
 
