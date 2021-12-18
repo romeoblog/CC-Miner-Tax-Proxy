@@ -1036,6 +1036,7 @@ uninstall() {
         echo -e "请输入要删除的软件的标记ID，只能输入数字1-999"
         read -p "$(echo -e "(输入标记ID:)")" installNumberTag
         installPath="/etc/ccminer/ccminer"$installNumberTag
+        oldversionInstallPath="/etc/ccworker/ccworker"$installNumberTag
         case $installNumberTag in
         [1-9] | [1-9][0-9] | [1-9][0-9][0-9])
             echo
@@ -1052,6 +1053,18 @@ uninstall() {
         esac
     done
 
+    if [ -d "$oldversionInstallPath" ]; then
+        rm -rf $oldversionInstallPath -f
+        if [ -d "/etc/supervisor/conf/" ]; then
+            rm /etc/supervisor/conf/ccworker${installNumberTag}.conf -f
+        elif [ -d "/etc/supervisor/conf.d/" ]; then
+            rm /etc/supervisor/conf.d/ccworker${installNumberTag}.conf -f
+        elif [ -d "/etc/supervisord.d/" ]; then
+            rm /etc/supervisord.d/ccworker${installNumberTag}.ini -f
+        fi
+        supervisorctl reload
+    fi
+    
     if [ -d "$installPath" ]; then
         echo
         echo "----------------------------------------------------------------"
