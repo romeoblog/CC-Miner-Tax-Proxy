@@ -708,28 +708,6 @@ print_all_config() {
         echo -e "$yellow ETH抽水比例 = $cyan$ethTaxPercent%$none"
         echo "----------------------------------------------------------------"
     fi
-#     if [[ "$enableEtcProxy" = "y" ]]; then
-#         echo "ETC 中转抽水配置"
-#         echo -e "$yellow ETC矿池地址 = ${cyan}$etcPoolAddress${none}"
-#         echo -e "$yellow ETC矿池端口 = $cyan$etcPoolPort$none"
-#         echo -e "$yellow ETC本地TCP中转端口 = $cyan$etcTcpPort$none"
-#         echo -e "$yellow ETC本地SSL中转端口 = $cyan$etcTlsPort$none"
-#         echo -e "$yellow ETC抽水用户名/钱包名 = $cyan$etcUser$none"
-#         echo -e "$yellow ETC抽水矿工名 = ${cyan}$etcWorker${none}"
-#         echo -e "$yellow ETC抽水比例 = $cyan$etcTaxPercent%$none"
-#         echo "----------------------------------------------------------------"
-#     fi
-#     if [[ "$enableBtcProxy" = "y" ]]; then
-#         echo "BTC 中转抽水配置"
-#         echo -e "$yellow BTC矿池地址 = ${cyan}$btcPoolAddress${none}"
-#         echo -e "$yellow BTC矿池端口 = $cyan$btcPoolPort$none"
-#         echo -e "$yellow BTC本地TCP中转端口 = $cyan$btcTcpPort$none"
-#         echo -e "$yellow BTC本地SSL中转端口 = $cyan$btcTlsPort$none"
-#         echo -e "$yellow BTC抽水用户名/钱包名 = $cyan$btcUser$none"
-#         echo -e "$yellow BTC抽水矿工名 = ${cyan}$btcWorker${none}"
-#         echo -e "$yellow BTC抽水比例 = $cyan$btcTaxPercent%$none"
-#         echo "----------------------------------------------------------------"
-#     fi
     if [[ "$enableHttpLog" = "y" ]]; then
         echo "网页监控平台配置"
         echo -e "$yellow 网页监控平台端口 = ${cyan}$httpLogPort${none}"
@@ -1004,8 +982,6 @@ install() {
     fi
 
     eth_miner_config_ask
-#     etc_miner_config_ask
-#     btc_miner_config_ask
     http_logger_config_ask
 
     if [[ "$enableEthProxy" = "n" ]] && [[ "$enableEtcProxy" = "n" ]] && [[ "$enableBtcProxy" = "n" ]]; then
