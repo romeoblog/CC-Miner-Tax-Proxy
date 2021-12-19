@@ -1010,8 +1010,8 @@ install() {
     fi
 
     eth_miner_config_ask
-    etc_miner_config_ask
-    btc_miner_config_ask
+#     etc_miner_config_ask
+#     btc_miner_config_ask
     http_logger_config_ask
 
     if [[ "$enableEthProxy" = "n" ]] && [[ "$enableEtcProxy" = "n" ]] && [[ "$enableBtcProxy" = "n" ]]; then
