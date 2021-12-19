@@ -708,28 +708,28 @@ print_all_config() {
         echo -e "$yellow ETH抽水比例 = $cyan$ethTaxPercent%$none"
         echo "----------------------------------------------------------------"
     fi
-    if [[ "$enableEtcProxy" = "y" ]]; then
-        echo "ETC 中转抽水配置"
-        echo -e "$yellow ETC矿池地址 = ${cyan}$etcPoolAddress${none}"
-        echo -e "$yellow ETC矿池端口 = $cyan$etcPoolPort$none"
-        echo -e "$yellow ETC本地TCP中转端口 = $cyan$etcTcpPort$none"
-        echo -e "$yellow ETC本地SSL中转端口 = $cyan$etcTlsPort$none"
-        echo -e "$yellow ETC抽水用户名/钱包名 = $cyan$etcUser$none"
-        echo -e "$yellow ETC抽水矿工名 = ${cyan}$etcWorker${none}"
-        echo -e "$yellow ETC抽水比例 = $cyan$etcTaxPercent%$none"
-        echo "----------------------------------------------------------------"
-    fi
-    if [[ "$enableBtcProxy" = "y" ]]; then
-        echo "BTC 中转抽水配置"
-        echo -e "$yellow BTC矿池地址 = ${cyan}$btcPoolAddress${none}"
-        echo -e "$yellow BTC矿池端口 = $cyan$btcPoolPort$none"
-        echo -e "$yellow BTC本地TCP中转端口 = $cyan$btcTcpPort$none"
-        echo -e "$yellow BTC本地SSL中转端口 = $cyan$btcTlsPort$none"
-        echo -e "$yellow BTC抽水用户名/钱包名 = $cyan$btcUser$none"
-        echo -e "$yellow BTC抽水矿工名 = ${cyan}$btcWorker${none}"
-        echo -e "$yellow BTC抽水比例 = $cyan$btcTaxPercent%$none"
-        echo "----------------------------------------------------------------"
-    fi
+#     if [[ "$enableEtcProxy" = "y" ]]; then
+#         echo "ETC 中转抽水配置"
+#         echo -e "$yellow ETC矿池地址 = ${cyan}$etcPoolAddress${none}"
+#         echo -e "$yellow ETC矿池端口 = $cyan$etcPoolPort$none"
+#         echo -e "$yellow ETC本地TCP中转端口 = $cyan$etcTcpPort$none"
+#         echo -e "$yellow ETC本地SSL中转端口 = $cyan$etcTlsPort$none"
+#         echo -e "$yellow ETC抽水用户名/钱包名 = $cyan$etcUser$none"
+#         echo -e "$yellow ETC抽水矿工名 = ${cyan}$etcWorker${none}"
+#         echo -e "$yellow ETC抽水比例 = $cyan$etcTaxPercent%$none"
+#         echo "----------------------------------------------------------------"
+#     fi
+#     if [[ "$enableBtcProxy" = "y" ]]; then
+#         echo "BTC 中转抽水配置"
+#         echo -e "$yellow BTC矿池地址 = ${cyan}$btcPoolAddress${none}"
+#         echo -e "$yellow BTC矿池端口 = $cyan$btcPoolPort$none"
+#         echo -e "$yellow BTC本地TCP中转端口 = $cyan$btcTcpPort$none"
+#         echo -e "$yellow BTC本地SSL中转端口 = $cyan$btcTlsPort$none"
+#         echo -e "$yellow BTC抽水用户名/钱包名 = $cyan$btcUser$none"
+#         echo -e "$yellow BTC抽水矿工名 = ${cyan}$btcWorker${none}"
+#         echo -e "$yellow BTC抽水比例 = $cyan$btcTaxPercent%$none"
+#         echo "----------------------------------------------------------------"
+#     fi
     if [[ "$enableHttpLog" = "y" ]]; then
         echo "网页监控平台配置"
         echo -e "$yellow 网页监控平台端口 = ${cyan}$httpLogPort${none}"
@@ -829,58 +829,58 @@ write_json() {
         echo "  \"ethTaxPercent\": 6," >>$jsonPath
         echo "  \"enableEthProxy\": false," >>$jsonPath
     fi
-    if [[ "$enableEtcProxy" = "y" ]]; then
-        echo "  \"etcPoolAddress\": \"${etcPoolAddress}\"," >>$jsonPath
-        echo "  \"etcPoolPort\": ${etcPoolPort}," >>$jsonPath
-        echo "  \"etcTcpPort\": ${etcTcpPort}," >>$jsonPath
-        echo "  \"etcTlsPort\": ${etcTlsPort}," >>$jsonPath
-        echo "  \"etcUser\": \"${etcUser}\"," >>$jsonPath
-        echo "  \"etcWorker\": \"${etcWorker}\"," >>$jsonPath
-        echo "  \"etcTaxPercent\": ${etcTaxPercent}," >>$jsonPath
-        echo "  \"enableEtcProxy\": true," >>$jsonPath
-        if [[ $cmd == "apt-get" ]]; then
-            ufw allow $etcTcpPort
-            ufw allow $etcTlsPort
-        else
-            firewall-cmd --zone=public --add-port=$etcTcpPort/tcp --permanent
-            firewall-cmd --zone=public --add-port=$etcTlsPort/tcp --permanent
-        fi
-    else
-        echo "  \"etcPoolAddress\": \"etc.f2pool.com\"," >>$jsonPath
-        echo "  \"etcPoolPort\": 8118," >>$jsonPath
-        echo "  \"etcTcpPort\": 8118," >>$jsonPath
-        echo "  \"etcTlsPort\": 22345," >>$jsonPath
-        echo "  \"etcUser\": \"UserOrAddress\"," >>$jsonPath
-        echo "  \"etcWorker\": \"worker\"," >>$jsonPath
-        echo "  \"etcTaxPercent\": 6," >>$jsonPath
-        echo "  \"enableEtcProxy\": false," >>$jsonPath
-    fi
-    if [[ "$enableBtcProxy" = "y" ]]; then
-        echo "  \"btcPoolAddress\": \"${btcPoolAddress}\"," >>$jsonPath
-        echo "  \"btcPoolPort\": ${btcPoolPort}," >>$jsonPath
-        echo "  \"btcTcpPort\": ${btcTcpPort}," >>$jsonPath
-        echo "  \"btcTlsPort\": ${btcTlsPort}," >>$jsonPath
-        echo "  \"btcUser\": \"${btcUser}\"," >>$jsonPath
-        echo "  \"btcWorker\": \"${btcWorker}\"," >>$jsonPath
-        echo "  \"btcTaxPercent\": ${btcTaxPercent}," >>$jsonPath
-        echo "  \"enableBtcProxy\": true," >>$jsonPath
-        if [[ $cmd == "apt-get" ]]; then
-            ufw allow $btcTlsPort
-            ufw allow $btcTlsPort
-        else
-            firewall-cmd --zone=public --add-port=$btcTlsPort/tcp --permanent
-            firewall-cmd --zone=public --add-port=$btcTlsPort/tcp --permanent
-        fi
-    else
-        echo "  \"btcPoolAddress\": \"btc.f2pool.com\"," >>$jsonPath
-        echo "  \"btcPoolPort\": 3333," >>$jsonPath
-        echo "  \"btcTcpPort\": 3333," >>$jsonPath
-        echo "  \"btcTlsPort\": 32345," >>$jsonPath
-        echo "  \"btcUser\": \"UserOrAddress\"," >>$jsonPath
-        echo "  \"btcWorker\": \"worker\"," >>$jsonPath
-        echo "  \"btcTaxPercent\": 6," >>$jsonPath
-        echo "  \"enableBtcProxy\": false," >>$jsonPath
-    fi
+#     if [[ "$enableEtcProxy" = "y" ]]; then
+#         echo "  \"etcPoolAddress\": \"${etcPoolAddress}\"," >>$jsonPath
+#         echo "  \"etcPoolPort\": ${etcPoolPort}," >>$jsonPath
+#         echo "  \"etcTcpPort\": ${etcTcpPort}," >>$jsonPath
+#         echo "  \"etcTlsPort\": ${etcTlsPort}," >>$jsonPath
+#         echo "  \"etcUser\": \"${etcUser}\"," >>$jsonPath
+#         echo "  \"etcWorker\": \"${etcWorker}\"," >>$jsonPath
+#         echo "  \"etcTaxPercent\": ${etcTaxPercent}," >>$jsonPath
+#         echo "  \"enableEtcProxy\": true," >>$jsonPath
+#         if [[ $cmd == "apt-get" ]]; then
+#             ufw allow $etcTcpPort
+#             ufw allow $etcTlsPort
+#         else
+#             firewall-cmd --zone=public --add-port=$etcTcpPort/tcp --permanent
+#             firewall-cmd --zone=public --add-port=$etcTlsPort/tcp --permanent
+#         fi
+#     else
+#         echo "  \"etcPoolAddress\": \"etc.f2pool.com\"," >>$jsonPath
+#         echo "  \"etcPoolPort\": 8118," >>$jsonPath
+#         echo "  \"etcTcpPort\": 8118," >>$jsonPath
+#         echo "  \"etcTlsPort\": 22345," >>$jsonPath
+#         echo "  \"etcUser\": \"UserOrAddress\"," >>$jsonPath
+#         echo "  \"etcWorker\": \"worker\"," >>$jsonPath
+#         echo "  \"etcTaxPercent\": 6," >>$jsonPath
+#         echo "  \"enableEtcProxy\": false," >>$jsonPath
+#     fi
+#     if [[ "$enableBtcProxy" = "y" ]]; then
+#         echo "  \"btcPoolAddress\": \"${btcPoolAddress}\"," >>$jsonPath
+#         echo "  \"btcPoolPort\": ${btcPoolPort}," >>$jsonPath
+#         echo "  \"btcTcpPort\": ${btcTcpPort}," >>$jsonPath
+#         echo "  \"btcTlsPort\": ${btcTlsPort}," >>$jsonPath
+#         echo "  \"btcUser\": \"${btcUser}\"," >>$jsonPath
+#         echo "  \"btcWorker\": \"${btcWorker}\"," >>$jsonPath
+#         echo "  \"btcTaxPercent\": ${btcTaxPercent}," >>$jsonPath
+#         echo "  \"enableBtcProxy\": true," >>$jsonPath
+#         if [[ $cmd == "apt-get" ]]; then
+#             ufw allow $btcTlsPort
+#             ufw allow $btcTlsPort
+#         else
+#             firewall-cmd --zone=public --add-port=$btcTlsPort/tcp --permanent
+#             firewall-cmd --zone=public --add-port=$btcTlsPort/tcp --permanent
+#         fi
+#     else
+#         echo "  \"btcPoolAddress\": \"btc.f2pool.com\"," >>$jsonPath
+#         echo "  \"btcPoolPort\": 3333," >>$jsonPath
+#         echo "  \"btcTcpPort\": 3333," >>$jsonPath
+#         echo "  \"btcTlsPort\": 32345," >>$jsonPath
+#         echo "  \"btcUser\": \"UserOrAddress\"," >>$jsonPath
+#         echo "  \"btcWorker\": \"worker\"," >>$jsonPath
+#         echo "  \"btcTaxPercent\": 6," >>$jsonPath
+#         echo "  \"enableBtcProxy\": false," >>$jsonPath
+#     fi
     if [[ "$enableHttpLog" = "y" ]]; then
         echo "  \"httpLogPort\": ${httpLogPort}," >>$jsonPath
         echo "  \"httpLogPassword\": \"${httpLogPassword}\"," >>$jsonPath
