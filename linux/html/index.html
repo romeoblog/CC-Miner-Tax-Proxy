@@ -245,15 +245,6 @@
         <input type="radio" name="tabset" id="tabEth" aria-controls="secEth" onclick="onEthClick()"
             style="display: none;">
         <label for="tabEth" id="labEth" style="display: none;">ETH信息</label>
-        <!-- Tab 2 -->
-        <input type="radio" name="tabset" id="tabEtc" aria-controls="secEtc" onclick="onEtcClick()"
-            style="display: none;">
-        <label for="tabEtc" id="labEtc" style="display: none;">ETC信息</label>
-        <!-- Tab 3 -->
-        <input type="radio" name="tabset" id="tabBtc" aria-controls="secBtc" onclick="onBtcClick()"
-            style="display: none;">
-        <label for="tabBtc" id="labBtc" style="display: none;">BTC信息</label>
-
         <a id="logButton" href="/log.html" target="_blank">
             查看原始日志
         </a>
@@ -287,39 +278,6 @@
                             </tr>
                         </thead>
                         <tbody id="ethTbody">
-                        <tbody>
-                    </table>
-                </div>
-            </section>
-            <section id="secEtc" class="tab-panel">
-                <div id="tableEtc">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>在线时长</th>
-                                <th>客户端IP</th>
-                                <th>单机算力</th>
-                                <th>总提交</th>
-                                <th>总抽水</th>
-                            </tr>
-                        </thead>
-                        <tbody id="etcTbody">
-                        <tbody>
-                    </table>
-                </div>
-            </section>
-            <section id="secBtc" class="tab-panel">
-                <div id="tableBtc">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>在线时长</th>
-                                <th>客户端IP</th>
-                                <th>总提交</th>
-                                <th>总抽水</th>
-                            </tr>
-                        </thead>
-                        <tbody id="btcTbody">
                         <tbody>
                     </table>
                 </div>
@@ -362,25 +320,6 @@
         "ethWorker": "ETH抽水钱包名",
         "ethTaxPercent": "ETH抽水比例(%)",
         "enableEthProxy": "启用ETH抽水",
-
-<!--        "etcPoolAddress": "ETC矿池地址",-->
-<!--        "etcPoolPort": "ETC矿池端口",-->
-<!--        "etcTcpPort": "ETC中转TCP端口",-->
-<!--        "etcTlsPort": "ETC中转SSL端口",-->
-<!--        "etcUser": "ETC抽水用户名",-->
-<!--        "etcWorker": "ETC抽水钱包名",-->
-<!--        "etcTaxPercent": "ETC抽水比例(%)",-->
-<!--        "enableEtcProxy": "启用ETC抽水",-->
-
-<!--        "btcPoolAddress": "BTC矿池地址",-->
-<!--        "btcPoolPort": "BTC矿池端口",-->
-<!--        "btcTcpPort": "BTC中转TCP端口",-->
-<!--        "btcTlsPort": "BTC中转SSL端口",-->
-<!--        "btcUser": "BTC抽水用户名",-->
-<!--        "btcWorker": "BTC抽水钱包名",-->
-<!--        "btcTaxPercent": "BTC抽水比例(%)",-->
-<!--        "enableBtcProxy": "启用BTC抽水",-->
-
         "enableHttpLog": "是否启用网页管理控制台",
         "httpLogPort": "网页管理控制台端口",
     }
@@ -400,14 +339,6 @@
         if (data.enableEthProxy) {
             $("#tabEth").show();
             $("#labEth").show();
-        }
-        if (data.enableEtcProxy) {
-            $("#tabEtc").show();
-            $("#labEtc").show();
-        }
-        if (data.enableBtcProxy) {
-            $("#tabBtc").show();
-            $("#labBtc").show();
         }
         var tableStr = "";
         for (var key in data) {
