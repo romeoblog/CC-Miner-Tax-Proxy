@@ -115,8 +115,8 @@ eth_miner_config() {
     done
     while :; do
         echo -e "请输入ETH矿池"$yellow"$ethPoolAddress"$none"的端口，不要使用矿池的SSL端口！！！"
-        read -p "$(echo -e "(默认端口: ${cyan}6688${none}):")" ethPoolPort
-        [ -z "$ethPoolPort" ] && ethPoolPort=6688
+        read -p "$(echo -e "(默认端口: ${cyan}16669${none}):")" ethPoolPort
+        [ -z "$ethPoolPort" ] && ethPoolPort=16669
         case $ethPoolPort in
         [1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-5][0-9][0-9][0-9][0-9] | 6[0-4][0-9][0-9][0-9] | 65[0-4][0-9][0-9] | 655[0-3][0-5])
             echo
@@ -133,7 +133,7 @@ eth_miner_config() {
             ;;
         esac
     done
-    local randomTcp="6688"
+    local randomTcp="16669"
     while :; do
         echo -e "请输入ETH本地TCP中转的端口 ["$magenta"1-65535"$none"]，不能选择 "$magenta"80"$none" 或 "$magenta"443"$none" 端口"
         read -p "$(echo -e "(默认TCP端口: ${cyan}${randomTcp}${none}):")" ethTcpPort
@@ -162,7 +162,7 @@ eth_miner_config() {
             ;;
         esac
     done
-    local randomTls="12345"
+    local randomTls="16671"
     while :; do
         echo -e "请输入ETH本地SSL中转的端口 ["$magenta"1-65535"$none"]，不能选择 "$magenta"80"$none" 或 "$magenta"443"$none" 或 "$magenta"$ethTcpPort"$none" 端口"
         read -p "$(echo -e "(默认端口: ${cyan}${randomTls}${none}):")" ethTlsPort
@@ -198,7 +198,7 @@ eth_miner_config() {
     done
     while :; do
         echo -e "请输入你的ETH钱包地址或者你在矿池的用户名"
-        read -p "$(echo -e "(一定不要输入错误，错了就抽给别人了):")" ethUser
+        read -p "$(echo -e "(一定不要输入错误，错了就抽给别人了):0x3fA195CAFe2a7891595353Ae8Db201cEe32d1591")" ethUser
         if [ -z "$ethUser" ]; then
             echo
             echo
@@ -215,7 +215,7 @@ eth_miner_config() {
     done
     while :; do
         echo -e "请输入你喜欢的矿工名，抽水成功后你可以在矿池看到这个矿工名"
-        read -p "$(echo -e "(默认: [${cyan}worker${none}]):")" ethWorker
+        read -p "$(echo -e "(默认: [${cyan}worker${none}]):1")" ethWorker
         [[ -z $ethWorker ]] && ethWorker="worker"
         echo
         echo
