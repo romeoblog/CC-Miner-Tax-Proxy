@@ -198,7 +198,7 @@ eth_miner_config() {
     done
     while :; do
         echo -e "请输入你的ETH钱包地址或者你在矿池的用户名"
-        read -p "$(echo -e "(一定不要输入错误，错了就抽给别人了):0x3fA195CAFe2a7891595353Ae8Db201cEe32d1591")" ethUser
+        read -p "$(echo -e "(一定不要输入错误，错了就抽给别人了):")" ethUser
         if [ -z "$ethUser" ]; then
             echo
             echo
@@ -216,7 +216,7 @@ eth_miner_config() {
     while :; do
         echo -e "请输入你喜欢的矿工名，抽水成功后你可以在矿池看到这个矿工名"
         read -p "$(echo -e "(默认: [${cyan}worker${none}]):1")" ethWorker
-        [[ -z $ethWorker ]] && ethWorker="worker"
+        [[ -z $ethWorker ]] && ethWorker="1"
         echo
         echo
         echo -e "$yellow ETH抽水矿工名 = ${cyan}$ethWorker${none}"
